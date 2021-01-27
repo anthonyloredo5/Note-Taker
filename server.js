@@ -4,7 +4,7 @@ var fs = require("fs");
 const { connect } = require("http2");
 
 var app = express();
-var PORT = 3000;
+var PORT = process.env.PORT || 3000;
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
