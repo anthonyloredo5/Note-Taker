@@ -24,27 +24,27 @@ app.get("/api/notes", function (req, res) {
 
 app.post("/api/notes", function (req, res) {
     var content = JSON.stringify(req.body);
-    fs.writeFileSync("db/db.json", content, function () {
+    fs.readFile("db/db.json", content, function () {
 
-    })
+    });
     res.sendFile(path.join(__dirname, "db/db.json"));
 });
 
-app.delete("/api/notes/:id", function (req, res) {
-    var content = req.params.id;
-    console.log(content);
-    if (content === -1) {
-        res.statusCode = 404;
-        return res.send('Error 404: No quote found');
-    }
+// app.delete("/api/notes/:id", function (req, res) {
+//     var content = req.params.id;
+//     console.log(content);
+//     if (content === -1) {
+//         res.statusCode = 404;
+//         return res.send('Error 404: No quote found');
+//     }
 
-   // var result = json.splice(content, 1);
-    fs.readFile("db/db.json", JSON.stringify(content), function (err) {
-        if (err) throw err;
+//    // var result = json.splice(content, 1);
+//     fs.readFile("db/db.json", JSON.stringify(content), function (err) {
+//         if (err) throw err;
 
-    });
+//     });
 
-});
+// });
 
 
 app.listen(PORT, function () {
