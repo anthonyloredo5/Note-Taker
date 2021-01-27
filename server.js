@@ -23,28 +23,35 @@ app.get("/api/notes", function (req, res) {
 });
 
 app.post("/api/notes", function (req, res) {
-    var content = JSON.stringify(req.body);
-    fs.readFile("db/db.json", content, function () {
+    var content = req.body;
+    fs.readFile("db/db.json", 'utf8', function (err, data) {
+        var dataArr = JSON.parse(data);
+        content.id = dataArr.length + 1;
+        dataArr.push(content);
+        fs.writeFile("db/db.json", JSON.stringify(dataArr), function (err) {
 
+        });
     });
     res.sendFile(path.join(__dirname, "db/db.json"));
 });
 
-// app.delete("/api/notes/:id", function (req, res) {
-//     var content = req.params.id;
-//     console.log(content);
-//     if (content === -1) {
-//         res.statusCode = 404;
-//         return res.send('Error 404: No quote found');
-//     }
+app.delete('/api/notes/:id', function (req, res) {
+    const id = parseInt(req.params.id);
 
-//    // var result = json.splice(content, 1);
-//     fs.readFile("db/db.json", JSON.stringify(content), function (err) {
-//         if (err) throw err;
+    fs.readFile("db/db.json", 'utf8', function (err, data) {
+        var dataArr = JSON.parse(data);
+        var ndataArr =[];
+        for (var i = 0; i < dataArr.length; i++) {
+            if (dataArr[i].id !== id) {
+                ndataArr.push(dataArr[i]);
+            }
+        }
+        fs.writeFile("db/db.json", JSON.stringify(ndataArr), function (err) {
 
-//     });
-
-// });
+        });
+        res.json(ndataArr);
+    })
+});
 
 
 app.listen(PORT, function () {
